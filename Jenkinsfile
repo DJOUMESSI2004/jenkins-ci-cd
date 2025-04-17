@@ -5,8 +5,8 @@ pipeline {
         stage('Build app') {
             steps {
                 echo 'the app is building.....!'
-                echo 'pull request by jenkins......'
-                echo 'i love jenkins.......'
+                sh 'npm install'
+                sh 'npm run build'
             }
         }
 
