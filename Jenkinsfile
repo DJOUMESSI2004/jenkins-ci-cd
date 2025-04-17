@@ -30,19 +30,17 @@ pipeline {
             steps {
                 echo 'Deploying the app to Windows VM...'
 
-                sshagent(credentials: ['vm-ssh-key']) {
-                    sh '''
-                        echo "Sending build folder to Windows VM..."
-                        scp -o StrictHostKeyChecking=no -r build/* 90502182@172.27.2.62:/c/ci-cd-server
-                    '''
-                }
+                // Use SCP command to send build folder to Windows VM
+                sh '''
+                    echo "Sending build folder to Windows VM..."
+                    scp -o StrictHostKeyChecking=no -i /path/to/your/private/key -r build/* 90502182@172.27.2.62:/c/ci-cd-server
+                '''
             }
         }
     }
 
     post {
         always {
-            // Add a step inside always to avoid the error
             echo 'Pipeline execution completed (whether success or failure).'
         }
         failure {
