@@ -1,14 +1,16 @@
 pipeline {
     agent any
+
+    tools {
+        nodejs 'Node-23-11-0'
+    }
     stages {
         
         stage('Build app') {
             steps {
                 echo 'the app is building.....!'
-                nodejs('Node-23-11-0'){
-                    sh 'npm install'
-                    sh 'npm run build'
-                }
+                sh 'npm install'
+                sh 'npm run build'
             }
         }
 
