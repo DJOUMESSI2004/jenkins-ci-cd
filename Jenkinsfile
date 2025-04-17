@@ -5,6 +5,8 @@ pipeline {
         stage('Build app') {
             steps {
                 echo 'the app is building.....!'
+                sh 'npm install'
+                sh 'npm run build'
             }
         }
 
