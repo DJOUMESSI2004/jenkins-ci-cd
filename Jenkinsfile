@@ -42,7 +42,8 @@ pipeline {
 
     post {
         always {
-            echo 'Pipeline finished.'
+            // Add a step inside always to avoid the error
+            echo 'Pipeline execution completed (whether success or failure).'
         }
         failure {
             echo 'Pipeline failed!'
