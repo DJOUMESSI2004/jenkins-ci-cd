@@ -4,33 +4,48 @@ pipeline {
     tools {
         nodejs 'Node-23-11-0'
     }
+
+    environment {
+        NEW_VERSION = '1.3.0'
+        SERVER_CREDENTIALS = credentials('vm-ssh-key') // Jenkins credential ID
+    }
+
     stages {
-        
         stage('Build app') {
             steps {
-                echo 'the app is building.....!'
+                echo 'Building the app...'
+                echo "App version: ${NEW_VERSION}"
                 sh 'npm install'
                 sh 'npm run build'
             }
         }
 
-         stage('Test app') {
+        stage('Test app') {
             steps {
-                echo 'Testing the application......'
+                echo 'Running tests (if any)...'
             }
         }
 
-
-         stage('Deploy app') {
+        stage('Deploy app') {
             steps {
-                echo 'Deploy the application .....'
+                echo 'Deploying the app to Windows VM...'
+
+                sshagent(credentials: ['vm-ssh-key']) {
+                    sh '''
+                        echo "Sending build folder to Windows VM..."
+                        scp -o StrictHostKeyChecking=no -r build/* 90502182@172.27.2.62:/c/ci-cd-server
+                    '''
+                }
             }
         }
     }
 
     post {
-        always{
-            
+        always {
+            echo 'Pipeline finished.'
+        }
+        failure {
+            echo 'Pipeline failed!'
         }
     }
 }
