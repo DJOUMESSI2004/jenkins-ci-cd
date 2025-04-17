@@ -5,8 +5,10 @@ pipeline {
         stage('Build app') {
             steps {
                 echo 'the app is building.....!'
-                sh 'yarn install'
-                sh 'yarn run build'
+                nodejs('Node-23-11-0'){
+                    sh 'yarn install'
+                    sh 'yarn build'
+                }
             }
         }
 
